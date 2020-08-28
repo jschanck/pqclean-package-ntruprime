@@ -1,0 +1,9 @@
+name: ntrulpr761
+type: kem
+claimed-nist-level: 3
+claimed-security: IND-CCA2
+length-public-key: 1039
+length-secret-key: 1294
+length-ciphertext: 1167
+length-shared-secret: 32
+nistkat-sha256: 212f68484864e927c674a656ea44ea0f47c048d0dd3518b102c98a9eacd16a72
