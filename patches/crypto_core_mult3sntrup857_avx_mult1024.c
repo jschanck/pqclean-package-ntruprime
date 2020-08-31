@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/mult3sntrup857/avx/mult1024.c	2020-08-31 09:55:07.025788803 -0400
-+++ supercop-20200826-patched/crypto_core/mult3sntrup857/avx/mult1024.c	2020-08-31 07:48:47.646994171 -0400
+--- supercop-20200826/crypto_core/mult3sntrup857/avx/mult1024.c	2020-08-31 19:56:55.511746950 -0400
++++ supercop-20200826-patched/crypto_core/mult3sntrup857/avx/mult1024.c	2020-08-31 20:09:19.719726550 -0400
 @@ -15,6 +15,26 @@
  #define mulhrs_x16 _mm256_mulhrs_epi16
  #define signmask_x16(x) _mm256_srai_epi16((x),15)
@@ -130,4 +130,32 @@
  #define h f
    int i;
    int16x16 x;
+@@ -214,14 +268,14 @@
+   for (i = p&~15;i < 1024;i += 16) store_x16(&g[i],x);
+ 
+   for (i = 0;i < p;++i) {
+-    int8 fi = inbytes[i];
++    int8 fi = (int8) inbytes[i];
+     int8 fi0 = fi&1;
+-    f[i] = fi0-(fi&(fi0<<1));
++    f[i] = (int16) (fi0-(fi&(fi0<<1)));
+   }
+   for (i = 0;i < p;++i) {
+-    int8 gi = kbytes[i];
++    int8 gi = (int8) kbytes[i];
+     int8 gi0 = gi&1;
+-    g[i] = gi0-(gi&(gi0<<1));
++    g[i] = (int16) (gi0-(gi&(gi0<<1)));
+   }
+ 
+   mult1024(fg,f,g);
+@@ -236,7 +290,7 @@
+     store_x16(&h[i],x);
+   }
+   
+-  for (i = 0;i < p;++i) outbytes[i] = h[i];
++  for (i = 0;i < p;++i) outbytes[i] = (unsigned char) h[i];
+ 
+   return 0;
+ }
 diff -ru --no-dereference supercop-20200826/crypto_core/mult3sntrup857/avx/ntt.c supercop-20200826-patched/crypto_core/mult3sntrup857/avx/ntt.c

@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/multsntrup857/avx/mult1024.c	2020-08-31 09:55:07.045788547 -0400
-+++ supercop-20200826-patched/crypto_core/multsntrup857/avx/mult1024.c	2020-08-31 07:48:47.678973654 -0400
+--- supercop-20200826/crypto_core/multsntrup857/avx/mult1024.c	2020-08-31 19:56:55.531747281 -0400
++++ supercop-20200826-patched/crypto_core/multsntrup857/avx/mult1024.c	2020-08-31 20:09:19.735726664 -0400
 @@ -15,6 +15,26 @@
  #define mulhrs_x16 _mm256_mulhrs_epi16
  #define signmask_x16(x) _mm256_srai_epi16((x),15)
@@ -191,4 +191,16 @@
  #define h f
    int i;
    int16x16 x;
+@@ -317,9 +402,9 @@
+     store_x16(&f[i],x);
+   }
+   for (i = 0;i < p;++i) {
+-    int8 gi = kbytes[i];
++    int8 gi = (int8) kbytes[i];
+     int8 gi0 = gi&1;
+-    g[i] = gi0-(gi&(gi0<<1));
++    g[i] = (int8) (gi0-(gi&(gi0<<1)));
+   }
+ 
+   mult1024(fg,f,g);
 diff -ru --no-dereference supercop-20200826/crypto_core/multsntrup857/avx/ntt.c supercop-20200826-patched/crypto_core/multsntrup857/avx/ntt.c

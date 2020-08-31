@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/857x3/avx/encode.c	2020-08-31 09:55:07.101787830 -0400
-+++ supercop-20200826-patched/crypto_encode/857x3/avx/encode.c	2020-08-31 07:48:47.762919795 -0400
+--- supercop-20200826/crypto_encode/857x3/avx/encode.c	2020-08-31 19:56:55.599748407 -0400
++++ supercop-20200826-patched/crypto_encode/857x3/avx/encode.c	2020-08-31 20:09:19.807727175 -0400
 @@ -7,13 +7,17 @@
  #define loops 7
  #define overshoot 10
@@ -24,4 +24,4 @@
  
  void crypto_encode(unsigned char *s,const void *v)
  {
-diff -ru --no-dereference supercop-20200826/crypto_encode/857x5167/avx/encode.c supercop-20200826-patched/crypto_encode/857x5167/avx/encode.c
+diff -ru --no-dereference supercop-20200826/crypto_encode/857x3/ref/encode.c supercop-20200826-patched/crypto_encode/857x3/ref/encode.c

@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/mult3sntrup761/avx/ntt.c	2020-08-31 09:55:07.021788854 -0400
-+++ supercop-20200826-patched/crypto_core/mult3sntrup761/avx/ntt.c	2020-08-31 07:48:47.638999300 -0400
+--- supercop-20200826/crypto_core/mult3sntrup761/avx/ntt.c	2020-08-31 19:56:55.507746884 -0400
++++ supercop-20200826-patched/crypto_core/mult3sntrup761/avx/ntt.c	2020-08-31 20:09:19.715726522 -0400
 @@ -9,16 +9,21 @@
  typedef int8_t int8;
  typedef int16_t int16;

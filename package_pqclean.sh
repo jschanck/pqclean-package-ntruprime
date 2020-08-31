@@ -24,7 +24,6 @@ function cleanup {
   )
   rm -rf ${PACKAGE}
   rm -rf test
-  rm -rf ${SUPERCOP}
 }
 trap cleanup EXIT
 
@@ -58,18 +57,18 @@ task 'Applying patches'
 endtask
 
 
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   mkdir -p crypto_kem/${PARAM}/{clean,avx2}
-  cp -L ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${PACKAGE}/${PARAM}/clean/
-  cp -L ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
-  cp crypto_sort/ref/*.{c,h} ${PACKAGE}/${PARAM}/clean/
-  cp crypto_sort/avx2/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
-  cp crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${PACKAGE}/${PARAM}/clean/
-  cp crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
+  cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${PACKAGE}/${PARAM}/clean/
+  cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
+  cp -Lp crypto_sort/ref/*.{c,h} ${PACKAGE}/${PARAM}/clean/
+  cp -Lp crypto_sort/avx2/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
+  cp -Lp crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${PACKAGE}/${PARAM}/clean/
+  cp -Lp crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
 done
 
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for OUT in clean avx2
   do
@@ -126,11 +125,11 @@ do
       # Copy all .c files. Change filenames to avoid conflicts if necessary.
       if [ "$(ls *.c | wc -l)" == "1" ]
       then
-        cp -L *.c ${PACKAGE}/${PARAM}/${OUT}/${X}.c
+        cp -Lp *.c ${PACKAGE}/${PARAM}/${OUT}/${X}.c
       else
         for F in *.c
         do
-          cp -L ${F} ${PACKAGE}/${PARAM}/${OUT}/${X}_${F}
+          cp -Lp ${F} ${PACKAGE}/${PARAM}/${OUT}/${X}_${F}
         done
         # Move the main file to the right location
         mv $(grep "^\(void\|int\) ${O}(" ${PACKAGE}/${PARAM}/${OUT}/${X}_*.c | cut -d: -f1) ${PACKAGE}/${PARAM}/${OUT}/${X}.c
@@ -140,11 +139,11 @@ do
       # Copy all .h files (except api.h). Change filenames and update #includes 
       for F in $(ls *.h | grep -v api.h | grep -v params.h)
       do
-        cp -L ${F} ${PACKAGE}/${PARAM}/${OUT}/${X}_${F}
+        cp -Lp ${F} ${PACKAGE}/${PARAM}/${OUT}/${X}_${F}
         sed -i -s "s/\"${F}/\"${X}_${F}/" ${PACKAGE}/${PARAM}/${OUT}/*
       done
 
-      [ -e "params.h" ] && cp -L params.h ${PACKAGE}/${PARAM}/${OUT}/DELETEME${X}_params.h
+      [ -e "params.h" ] && cp -Lp params.h ${PACKAGE}/${PARAM}/${OUT}/DELETEME${X}_params.h
       )
       endtask
 
@@ -183,11 +182,11 @@ ${PROTOTYPE};
   )
 done
 
-for PARAM in sntrup653 sntrup761 sntrup857
+for PARAM in sntrup{653,761,857}
 do
   task "Copying ${PARAM}/crypto_decode/int16/ref to avx2"
   API=$(sed "s/CRYPTO_/${X}_/" ${SUPERCOP}/crypto_decode/int16/ref/api.h)
-  cp -L ${SUPERCOP}/crypto_decode/int16/ref/*.c ${PACKAGE}/${PARAM}/avx2/crypto_decode_int16.c
+  cp -Lp ${SUPERCOP}/crypto_decode/int16/ref/*.c ${PACKAGE}/${PARAM}/avx2/crypto_decode_int16.c
   echo "\
 #ifndef CRYPTO_DECODE_INT16_H
 #define CRYPTO_DECODE_INT16_H
@@ -202,7 +201,7 @@ void crypto_decode_int16(void *x,const unsigned char *s);
 done
 
 task 'Adding #defines from dependencies'
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for OUT in clean avx2
   do
@@ -227,7 +226,7 @@ sed -i -s 's/crypto_\(uint\|int\)\(8\|16\|32\|64\)/\1\2_t/' ${PACKAGE}/*/*/*.c
 endtask
 
 task 'Substituting PQClean AES, SHA, and API' 
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for IMPL in clean avx2
   do
@@ -276,14 +275,14 @@ done
 endtask
 
 ( cd ${MANIFEST}
-for P1 in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for P1 in {sntrup,ntrulpr}{653,761,857}
 do
   for OUT in clean avx2
   do
     task "${P1}/${OUT} duplicate consistency"
     echo "\
 consistency_checks:" > ${P1}_${OUT}.yml
-    for P2 in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+    for P2 in {sntrup,ntrulpr}{653,761,857}
     do
       for IN in clean avx2
       do
@@ -313,7 +312,7 @@ rm -rf ${MANIFEST}/*.xxx
 
 task 'Namespacing' 
 # Manual namespacing
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for IMPL in clean avx2
   do
@@ -345,7 +344,7 @@ done
 endtask
 
 task 'Sorting #includes'
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for IMPL in clean avx2
   do
@@ -370,13 +369,13 @@ endtask
 
 task 'Copying metadata'
 # Makefiles and other metadata
-for PARAM in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
+for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   ( cd ${PACKAGE}/${PARAM}/
 
   echo "Public Domain" > clean/LICENSE
-  cp clean/LICENSE avx2/LICENSE
-  cp ${WORKDIR}/meta/crypto_kem_${PARAM}_META.yml META.yml
+  cp -Lp clean/LICENSE avx2/LICENSE
+  cp -Lp ${WORKDIR}/meta/crypto_kem_${PARAM}_META.yml META.yml
   echo "\
 principal-submitters:
   - Daniel J. Bernstein
@@ -403,7 +402,7 @@ LIB=lib${PARAM}_clean.a
 HEADERS=$(basename -a clean/*.h | tr '\n' ' ')
 OBJECTS=$(basename -a clean/*.c | sed 's/\.c/.o/' | tr '\n' ' ')
 
-CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wvla -Werror -Wredundant-decls -Wmissing-prototypes -std=c99 -I../../../common \$(EXTRAFLAGS)
+CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wvla -Werror -Wredundant-decls -Wmissing-prototypes -Wconversion -std=c99 -I../../../common \$(EXTRAFLAGS)
 
 all: \$(LIB)
 
@@ -445,7 +444,7 @@ LIB=lib${PARAM}_avx2.a
 HEADERS=$(basename -a avx2/*.h | tr '\n' ' ')
 OBJECTS=$(basename -a avx2/*.c | sed 's/\.c/.o/' | tr '\n' ' ')
 
-CFLAGS=-O3 -mavx2 -mbmi2 -Wall -Wextra -Wpedantic -Wvla -Werror -Wredundant-decls -Wmissing-prototypes -std=c99 -I../../../common \$(EXTRAFLAGS)
+CFLAGS=-O3 -mavx2 -mbmi2 -Wall -Wextra -Wpedantic -Wvla -Werror -Wredundant-decls -Wmissing-prototypes -Wconversion -std=c99 -I../../../common \$(EXTRAFLAGS)
 
 all: \$(LIB)
 

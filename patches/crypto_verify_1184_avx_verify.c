@@ -1,8 +1,17 @@
---- supercop-20200826/crypto_verify/1184/avx/verify.c	2020-08-31 09:55:07.125787522 -0400
-+++ supercop-20200826-patched/crypto_verify/1184/avx/verify.c	2020-08-31 07:48:47.782906972 -0400
-@@ -31,5 +31,5 @@
-   differentbits |= _mm256_extract_epi8(diff,16);
-   differentbits |= _mm256_extract_epi8(diff,24);
+--- supercop-20200826/crypto_verify/1184/avx/verify.c	2020-08-31 19:56:55.615748673 -0400
++++ supercop-20200826-patched/crypto_verify/1184/avx/verify.c	2020-08-31 20:09:19.831727345 -0400
+@@ -26,10 +26,10 @@
+   diff |= _mm256_srli_epi32(diff,16);
+   diff |= _mm256_srli_epi64(diff,32);
+ 
+-  differentbits = _mm256_extract_epi8(diff,0);
+-  differentbits |= _mm256_extract_epi8(diff,8);
+-  differentbits |= _mm256_extract_epi8(diff,16);
+-  differentbits |= _mm256_extract_epi8(diff,24);
++  differentbits = (unsigned int) _mm256_extract_epi8(diff,0);
++  differentbits |= (unsigned int) _mm256_extract_epi8(diff,8);
++  differentbits |= (unsigned int) _mm256_extract_epi8(diff,16);
++  differentbits |= (unsigned int) _mm256_extract_epi8(diff,24);
  
 -  return (1 & ((differentbits - 1) >> 8)) - 1;
 +  return (int) (1 & ((differentbits - 1) >> 8)) - 1;
