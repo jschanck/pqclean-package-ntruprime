@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_verify/1025/ref/verify.c	2020-08-28 13:06:31.017178965 -0400
-+++ supercop-20200826-patched/crypto_verify/1025/ref/verify.c	2020-08-28 12:38:23.493144797 -0400
+--- supercop-20200826/crypto_verify/1025/ref/verify.c	2020-08-31 09:55:07.113787676 -0400
++++ supercop-20200826-patched/crypto_verify/1025/ref/verify.c	2020-08-31 07:48:47.774912101 -0400
 @@ -8,5 +8,5 @@
    for (i = 0;i < crypto_verify_BYTES;++i)
      differentbits |= x[i] ^ y[i];

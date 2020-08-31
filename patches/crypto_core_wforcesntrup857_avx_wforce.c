@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/wforcesntrup857/avx/wforce.c	2020-08-28 13:06:30.985178971 -0400
-+++ supercop-20200826-patched/crypto_core/wforcesntrup857/avx/wforce.c	2020-08-28 12:38:23.453144775 -0400
+--- supercop-20200826/crypto_core/wforcesntrup857/avx/wforce.c	2020-08-31 09:55:07.057788393 -0400
++++ supercop-20200826-patched/crypto_core/wforcesntrup857/avx/wforce.c	2020-08-31 07:48:47.702958266 -0400
 @@ -21,7 +21,7 @@
  
    mask = (weight-w)|(w-weight);

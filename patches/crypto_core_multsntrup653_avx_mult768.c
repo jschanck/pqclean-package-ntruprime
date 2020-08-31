@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/multsntrup653/avx/mult768.c	2020-08-28 13:06:30.969178974 -0400
-+++ supercop-20200826-patched/crypto_core/multsntrup653/avx/mult768.c	2020-08-28 12:38:23.433144763 -0400
+--- supercop-20200826/crypto_core/multsntrup653/avx/mult768.c	2020-08-31 09:55:07.029788752 -0400
++++ supercop-20200826-patched/crypto_core/multsntrup653/avx/mult768.c	2020-08-31 07:48:47.658986477 -0400
 @@ -15,6 +15,21 @@
  #define mulhrs_x16 _mm256_mulhrs_epi16
  #define signmask_x16(x) _mm256_srai_epi16((x),15)

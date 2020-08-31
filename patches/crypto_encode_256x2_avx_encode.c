@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/256x2/avx/encode.c	2020-08-28 13:06:30.993178969 -0400
-+++ supercop-20200826-patched/crypto_encode/256x2/avx/encode.c	2020-08-28 12:41:57.901235335 -0400
+--- supercop-20200826/crypto_encode/256x2/avx/encode.c	2020-08-31 09:55:07.069788239 -0400
++++ supercop-20200826-patched/crypto_encode/256x2/avx/encode.c	2020-08-31 07:48:47.718948008 -0400
 @@ -30,12 +30,36 @@
    int32_t c5 = _mm256_movemask_epi8(b5);
    int32_t c6 = _mm256_movemask_epi8(b6);

@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/int16/ref/encode.c	2020-08-28 13:06:31.017178965 -0400
-+++ supercop-20200826-patched/crypto_encode/int16/ref/encode.c	2020-08-28 12:38:23.493144797 -0400
+--- supercop-20200826/crypto_encode/int16/ref/encode.c	2020-08-31 09:55:07.109787727 -0400
++++ supercop-20200826-patched/crypto_encode/int16/ref/encode.c	2020-08-31 07:48:47.770914667 -0400
 @@ -1,9 +1,10 @@
  #include "crypto_encode.h"
  #include "crypto_uint16.h"
@@ -12,4 +12,4 @@
    s[0] = u;
    s[1] = u >> 8;
  }
-diff -ru --no-dereference supercop-20200826/crypto_verify/1025/avx/verify.c supercop-20200826-patched/crypto_verify/1025/avx/verify.c
+diff -ru --no-dereference supercop-20200826/crypto_kem/ntrulpr761/factored/kem.c supercop-20200826-patched/crypto_kem/ntrulpr761/factored/kem.c

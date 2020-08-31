@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/653x3/avx/encode.c	2020-08-28 13:06:30.997178969 -0400
-+++ supercop-20200826-patched/crypto_encode/653x3/avx/encode.c	2020-08-28 12:38:23.465144782 -0400
+--- supercop-20200826/crypto_encode/653x3/avx/encode.c	2020-08-31 09:55:07.077788137 -0400
++++ supercop-20200826-patched/crypto_encode/653x3/avx/encode.c	2020-08-31 07:48:47.730940313 -0400
 @@ -7,13 +7,17 @@
  #define loops 6
  #define overshoot 29

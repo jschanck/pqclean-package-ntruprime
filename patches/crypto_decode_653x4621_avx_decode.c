@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_decode/653x4621/avx/decode.c	2020-08-28 13:06:30.989178970 -0400
-+++ supercop-20200826-patched/crypto_decode/653x4621/avx/decode.c	2020-08-28 12:47:42.497291564 -0400
+--- supercop-20200826/crypto_decode/653x4621/avx/decode.c	2020-08-31 09:55:07.061788342 -0400
++++ supercop-20200826-patched/crypto_decode/653x4621/avx/decode.c	2020-08-31 07:48:47.706955701 -0400
 @@ -60,7 +60,7 @@
  static inline __m256i ifgesubconst(__m256i x,int16 y)
  {

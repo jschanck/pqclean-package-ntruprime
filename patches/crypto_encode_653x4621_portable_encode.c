@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/653x4621/portable/encode.c	2020-08-28 13:06:31.001178968 -0400
-+++ supercop-20200826-patched/crypto_encode/653x4621/portable/encode.c	2020-08-28 12:38:23.469144783 -0400
+--- supercop-20200826/crypto_encode/653x4621/portable/encode.c	2020-08-31 09:55:07.081788085 -0400
++++ supercop-20200826-patched/crypto_encode/653x4621/portable/encode.c	2020-08-31 07:48:47.738935183 -0400
 @@ -110,5 +110,5 @@
    R[0] = r2;
    
