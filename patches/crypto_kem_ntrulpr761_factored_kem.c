@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_kem/ntrulpr761/factored/kem.c	2020-08-25 20:27:06.000000000 -0400
-+++ supercop-20200826-patched/crypto_kem/ntrulpr761/factored/kem.c	2020-09-01 15:35:26.042447764 -0400
+--- supercop-20200826/crypto_kem/ntrulpr761/factored/kem.c
++++ supercop-20200826-patched/crypto_kem/ntrulpr761/factored/kem.c
 @@ -24,7 +24,7 @@
  /* return -1 if x<0; otherwise return 0 */
  static int int16_negative_mask(int16 x)

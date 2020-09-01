@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/wforcesntrup761/ref/wforce.c	2020-08-25 20:26:59.000000000 -0400
-+++ supercop-20200826-patched/crypto_core/wforcesntrup761/ref/wforce.c	2020-09-01 15:35:25.982447986 -0400
+--- supercop-20200826/crypto_core/wforcesntrup761/ref/wforce.c
++++ supercop-20200826-patched/crypto_core/wforcesntrup761/ref/wforce.c
 @@ -16,11 +16,11 @@
  /* return -1 if x!=0; else return 0 */
  static int int16_nonzero_mask(int16 x)

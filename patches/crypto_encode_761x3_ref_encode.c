@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/761x3/ref/encode.c	2020-08-25 20:26:58.000000000 -0400
-+++ supercop-20200826-patched/crypto_encode/761x3/ref/encode.c	2020-09-01 15:35:26.022447838 -0400
+--- supercop-20200826/crypto_encode/761x3/ref/encode.c
++++ supercop-20200826-patched/crypto_encode/761x3/ref/encode.c
 @@ -12,9 +12,9 @@
  
    for (i = 0;i < p/4;++i) {

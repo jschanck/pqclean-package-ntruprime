@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_decode/int16/ref/decode.c	2020-08-25 20:26:58.000000000 -0400
-+++ supercop-20200826-patched/crypto_decode/int16/ref/decode.c	2020-09-01 15:35:25.998447927 -0400
+--- supercop-20200826/crypto_decode/int16/ref/decode.c
++++ supercop-20200826-patched/crypto_decode/int16/ref/decode.c
 @@ -5,6 +5,6 @@
  {
    crypto_uint16 u0 = s[0];

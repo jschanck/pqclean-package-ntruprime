@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_kem/sntrup761/factored/params.h	2020-08-25 20:27:06.000000000 -0400
-+++ supercop-20200826-patched/crypto_kem/sntrup761/factored/params.h	2020-09-01 15:35:26.042447764 -0400
+--- supercop-20200826/crypto_kem/sntrup761/factored/params.h
++++ supercop-20200826-patched/crypto_kem/sntrup761/factored/params.h
 @@ -5,7 +5,7 @@
  #define q 4591
  #define w 286

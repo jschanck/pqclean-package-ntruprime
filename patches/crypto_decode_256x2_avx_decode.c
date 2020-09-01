@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_decode/256x2/avx/decode.c	2020-08-25 20:26:58.000000000 -0400
-+++ supercop-20200826-patched/crypto_decode/256x2/avx/decode.c	2020-09-01 15:35:25.990447957 -0400
+--- supercop-20200826/crypto_decode/256x2/avx/decode.c
++++ supercop-20200826-patched/crypto_decode/256x2/avx/decode.c
 @@ -3,7 +3,7 @@
  #include "crypto_decode.h"
  

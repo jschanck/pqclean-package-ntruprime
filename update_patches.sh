@@ -39,6 +39,7 @@ diff -ru --no-dereference ${V1} ${V2} > ${PATCHES}/tmp/p
         | cut -d'/' -f 2- \
         | tr '/' '_')
   mv ${X} ${Y}
+  sed -i '1,2 s/\t.*$//' ${Y}
   done
 )
 mv ${PATCHES}/tmp/* ${PATCHES}

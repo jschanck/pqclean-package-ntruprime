@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/int16/ref/encode.c	2020-08-25 20:26:58.000000000 -0400
-+++ supercop-20200826-patched/crypto_encode/int16/ref/encode.c	2020-09-01 15:35:26.038447779 -0400
+--- supercop-20200826/crypto_encode/int16/ref/encode.c
++++ supercop-20200826-patched/crypto_encode/int16/ref/encode.c
 @@ -1,9 +1,10 @@
  #include "crypto_encode.h"
  #include "crypto_uint16.h"

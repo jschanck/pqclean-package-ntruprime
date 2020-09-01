@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/wforcesntrup761/avx/wforce.c	2020-08-25 20:26:59.000000000 -0400
-+++ supercop-20200826-patched/crypto_core/wforcesntrup761/avx/wforce.c	2020-09-01 15:35:25.982447986 -0400
+--- supercop-20200826/crypto_core/wforcesntrup761/avx/wforce.c
++++ supercop-20200826-patched/crypto_core/wforcesntrup761/avx/wforce.c
 @@ -19,9 +19,9 @@
    crypto_core_weight((unsigned char *) &weight,in,0,0);
    crypto_decode_int16(&weight,(unsigned char *) &weight);
