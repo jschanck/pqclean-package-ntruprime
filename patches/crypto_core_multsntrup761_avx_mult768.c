@@ -85,7 +85,7 @@
 +    int8 gi = (int8) kbytes[i];
      int8 gi0 = gi&1;
 -    g[i] = gi0-(gi&(gi0<<1));
-+    g[i] = (int16) (gi0-(gi&((int16) gi0<<1)));
++    g[i] = (int16) (gi0-(gi&(gi0<<1)));
    }
  
    mult768(fg,f,g);
