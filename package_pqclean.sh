@@ -68,7 +68,7 @@ do
   ${PYTHON} ${SCRIPTS}/gen_crypto_encode_avx.py $p $m > crypto_encode/${X}/avx/encode.c
   ${PYTHON} ${SCRIPTS}/gen_crypto_encode_portable.py $p $m > crypto_encode/${X}/portable/encode.c
 
-  ${PYTHON} ${SCRIPTS}/gen_crypto_core_inv3.py $p > crypto_core/inv3sntrup${p}/avx/r3_recip.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_core_inv3_avx.py $p > crypto_core/inv3sntrup${p}/avx/r3_recip.c
 done
 
 for X in 653x1541x1541x2310xTrue 761x1531x1531x2295xTrue 857x1723x1723x2583xTrue
