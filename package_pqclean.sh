@@ -1,11 +1,17 @@
-VERSION=20200826
+VERSION=supercop-20200826
 
-WORKDIR=`dirname $0`
-WORKDIR=`cd ${WORKDIR} && pwd`
-PACKAGE=${WORKDIR}/crypto_kem
-SUPERCOP=${WORKDIR}/supercop-${VERSION}/
+PYTHON=/usr/bin/python3
 
-cd ${WORKDIR}
+BASE=`dirname $0`
+BASE=`cd ${BASE} && pwd`
+cd ${BASE}
+
+BUILD=${BASE}/build
+BUILD_CRYPTO_KEM=${BUILD}/crypto_kem
+BUILD_TEST=${BUILD}/test
+SUPERCOP=${BUILD}/${VERSION}
+
+SCRIPTS=${BASE}/scripts
 
 function task {
   echo -e "[ ]" $1
@@ -16,56 +22,81 @@ function endtask {
 }
 
 function cleanup {
-  ( cd ${SUPERCOP}
-  for X in ../patches/*
-  do
-    patch -s -p1 -R < ${X}
-  done
-  )
-  rm -rf ${PACKAGE}
-  rm -rf test
+  rm -rf ${BUILD}
 }
 trap cleanup EXIT
 
-if [ -e "${PACKAGE}" ]
+if [ -e "${BUILD_CRYPTO_KEM}" ]
 then
-  read -p "${PACKAGE} directory already exists. Delete it? " yn
+  read -p "${BUILD_CRYPTO_KEM} directory already exists. Delete it? " yn
   if [ "${yn:-n}" != "y" ]
   then
     exit -1
   fi
 fi
+mkdir -p ${BUILD_CRYPTO_KEM} ${BUILD_TEST}
 
 if [ ! -e "${SUPERCOP}" ]
 then
-  if [ ! -f supercop-${VERSION}.tar.xz ]
+  if [ ! -f ${BASE}/${VERSION}.tar.xz ]
   then
-    wget https://bench.cr.yp.to/supercop/supercop-${VERSION}.tar.xz
+    wget -P ${BASE} https://bench.cr.yp.to/supercop/supercop-${VERSION}.tar.xz
   fi
-  task "Unpacking supercop-${VERSION}"
-  unxz < supercop-${VERSION}.tar.xz | tar -xf -
+  (cd ${BUILD}
+  task "Unpacking ${VERSION}"
+  unxz < ${BASE}/${VERSION}.tar.xz | tar -xf -
   endtask
+  )
 fi
 
 task 'Applying patches'
 ( cd ${SUPERCOP}
-  for X in ../patches/*
-  do
-    patch -s -p1 < ${X}
-  done
+
+for X in ${BASE}/patches/*
+do
+  patch -s -p1 < ${X}
+done
+
+for X in 653x4621 761x4591 857x5167
+do
+  IFS=x read p m <<< ${X}
+
+  ${PYTHON} ${SCRIPTS}/gen_crypto_decode_avx.py $p $m > crypto_decode/${X}/avx/decode.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_decode_portable.py $p $m > crypto_decode/${X}/portable/decode.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_decode_int16.py $p $m > crypto_decode/${X}/int16/decode.c
+
+  ${PYTHON} ${SCRIPTS}/gen_crypto_encode_avx.py $p $m > crypto_encode/${X}/avx/encode.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_encode_portable.py $p $m > crypto_encode/${X}/portable/encode.c
+
+  ${PYTHON} ${SCRIPTS}/gen_crypto_core_inv3.py $p > crypto_core/inv3sntrup${p}/avx/r3_recip.c
+done
+
+for X in 653x1541x1541x2310xTrue 761x1531x1531x2295xTrue 857x1723x1723x2583xTrue
+do
+  IFS=x read p m0 m1 off div3 <<< ${X}
+
+  ${PYTHON} ${SCRIPTS}/gen_crypto_decode_avx.py $p $m0 $m1 $off $div3 > crypto_decode/${p}x${m0}/avx/decode.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_decode_int16.py $p $m0 $m1 $off $div3 > crypto_decode/${p}x${m0}/int16/decode.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_decode_portable.py $p $m0 $m1 $off $div3 > crypto_decode/${p}x${m0}/portable/decode.c
+
+  ${PYTHON} ${SCRIPTS}/gen_crypto_encode_avx.py $p $m0 $m1 $off $div3 > crypto_encode/${p}x${m0}/avx/encode.c
+  ${PYTHON} ${SCRIPTS}/gen_crypto_encode_portable.py $p $m0 $m1 $off $div3 > crypto_encode/${p}x${m0}/portable/encode.c
+
+  ${PYTHON} ${SCRIPTS}/gen_crypto_encode_avx.py $p $m0 $m1 $off $div3 True > crypto_encode/${p}x${m0}round/avx/encode.c
+done
 )
 endtask
 
 
 for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
-  mkdir -p crypto_kem/${PARAM}/{clean,avx2}
-  cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${PACKAGE}/${PARAM}/clean/
-  cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
-  cp -Lp crypto_sort/ref/*.{c,h} ${PACKAGE}/${PARAM}/clean/
-  cp -Lp crypto_sort/avx2/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
-  cp -Lp crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${PACKAGE}/${PARAM}/clean/
-  cp -Lp crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${PACKAGE}/${PARAM}/avx2/
+  mkdir -p ${BUILD_CRYPTO_KEM}/${PARAM}/{clean,avx2}
+  cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
+  cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
+  cp -Lp ${BASE}/crypto_sort/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
+  cp -Lp ${BASE}/crypto_sort/avx2/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
+  cp -Lp ${BASE}/crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
+  cp -Lp ${BASE}/crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
 done
 
 for PARAM in {sntrup,ntrulpr}{653,761,857}
@@ -75,15 +106,15 @@ do
     # Add '#include "crypto_encode_[...]round.h"' to params.h
     # Sort of a kludge, but its easier to grab the required dependencies
     # if we do all includes up front.
-    sed -i 's/^\(.*\)round\.h"/\1round.h"\n\1.h"/' ${PACKAGE}/${PARAM}/${OUT}/params.h
+    sed -i 's/^\(.*\)round\.h"/\1round.h"\n\1.h"/' ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
     # Similary, we need crypto_core_weight[...].h and crypto_encode_int16.h for some parameter sets
     if [ -e "${SUPERCOP}/crypto_core/weight${PARAM}" ]
     then
-      sed -i "3a#include \"crypto_core_weight${PARAM}.h\"" ${PACKAGE}/${PARAM}/${OUT}/params.h
-      sed -i "3a#include \"crypto_encode_int16.h\"" ${PACKAGE}/${PARAM}/${OUT}/params.h
+      sed -i "3a#include \"crypto_core_weight${PARAM}.h\"" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
+      sed -i "3a#include \"crypto_encode_int16.h\"" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
     fi
 
-    DEPS=$(grep crypto_.*.h ${PACKAGE}/${PARAM}/${OUT}/params.h \
+    DEPS=$(grep crypto_.*.h ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h \
                 | cut -d' ' -f 2                               \
                 | cut -d'.' -f 1                               \
                 | tr -d '\"')
@@ -125,25 +156,25 @@ do
       # Copy all .c files. Change filenames to avoid conflicts if necessary.
       if [ "$(ls *.c | wc -l)" == "1" ]
       then
-        cp -Lp *.c ${PACKAGE}/${PARAM}/${OUT}/${X}.c
+        cp -Lp *.c ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}.c
       else
         for F in *.c
         do
-          cp -Lp ${F} ${PACKAGE}/${PARAM}/${OUT}/${X}_${F}
+          cp -Lp ${F} ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}_${F}
         done
         # Move the main file to the right location
-        mv $(grep "^\(void\|int\) ${O}(" ${PACKAGE}/${PARAM}/${OUT}/${X}_*.c | cut -d: -f1) ${PACKAGE}/${PARAM}/${OUT}/${X}.c
+        mv $(grep "^\(void\|int\) ${O}(" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}_*.c | cut -d: -f1) ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}.c
       fi
-      sed -i -s "s/${O}\.h/${X}\.h/" ${PACKAGE}/${PARAM}/${OUT}/*.c
+      sed -i -s "s/${O}\.h/${X}\.h/" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/*.c
 
       # Copy all .h files (except api.h). Change filenames and update #includes 
       for F in $(ls *.h | grep -v api.h | grep -v params.h)
       do
-        cp -Lp ${F} ${PACKAGE}/${PARAM}/${OUT}/${X}_${F}
-        sed -i -s "s/\"${F}/\"${X}_${F}/" ${PACKAGE}/${PARAM}/${OUT}/*
+        cp -Lp ${F} ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}_${F}
+        sed -i -s "s/\"${F}/\"${X}_${F}/" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/*
       done
 
-      [ -e "params.h" ] && cp -Lp params.h ${PACKAGE}/${PARAM}/${OUT}/DELETEME${X}_params.h
+      [ -e "params.h" ] && cp -Lp params.h ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/DELETEME${X}_params.h
       )
       endtask
 
@@ -154,7 +185,7 @@ do
         API=""
       fi
 
-      MAIN=${PACKAGE}/${PARAM}/${OUT}/${X}
+      MAIN=${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}
       PROTOTYPE=$(grep '\(void\|int\) crypto_.*)' ${MAIN}.c | sed "s/${O}/${X}/")
       echo "\
 #ifndef ${X^^}_H
@@ -164,7 +195,7 @@ ${API}
 
 #define ${X} CRYPTO_NAMESPACE(${X})
 ${PROTOTYPE};
-#endif" > ${PACKAGE}/${PARAM}/${OUT}/${X}.h
+#endif" > ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}.h
       for Y in $(sed "s/CRYPTO_//" ${SUPERCOP}/${O}/${P}/${IN}/api.h | cut -d' ' -f 2)
       do
         sed -i -s "s/${O}_${Y}/${X}_${Y}/" ${MAIN}.c
@@ -174,7 +205,7 @@ ${PROTOTYPE};
   done
 
   # Remove some unnecessary files
-  (cd ${PACKAGE}/${PARAM}/avx2/
+  (cd ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
   [ -e "crypto_core_mult3${PARAM}_ntt.c" ] && rm crypto_core_mult3${PARAM}_ntt.c
   [ -e "crypto_core_mult3${PARAM}_ntt.h" ] && rm crypto_core_mult3${PARAM}_ntt.h
   [ -e "crypto_core_mult3${PARAM}.c" ] \
@@ -186,7 +217,7 @@ for PARAM in sntrup{653,761,857}
 do
   task "Copying ${PARAM}/crypto_decode/int16/ref to avx2"
   API=$(sed "s/CRYPTO_/${X}_/" ${SUPERCOP}/crypto_decode/int16/ref/api.h)
-  cp -Lp ${SUPERCOP}/crypto_decode/int16/ref/*.c ${PACKAGE}/${PARAM}/avx2/crypto_decode_int16.c
+  cp -Lp ${SUPERCOP}/crypto_decode/int16/ref/*.c ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.c
   echo "\
 #ifndef CRYPTO_DECODE_INT16_H
 #define CRYPTO_DECODE_INT16_H
@@ -194,9 +225,9 @@ do
 ${API}
 #define crypto_decode_int16 CRYPTO_NAMESPACE(crypto_decode_int16)
 void crypto_decode_int16(void *x,const unsigned char *s);
-#endif" > ${PACKAGE}/${PARAM}/avx2/crypto_decode_int16.h
-  sed -i -s "s/crypto_decode\.h/crypto_decode_int16\.h/" ${PACKAGE}/${PARAM}/avx2/crypto_decode_int16.c
-  sed -i -s "s/crypto_decode(/crypto_decode_int16(/" ${PACKAGE}/${PARAM}/avx2/crypto_decode_int16.c
+#endif" > ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.h
+  sed -i -s "s/crypto_decode\.h/crypto_decode_int16\.h/" ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.c
+  sed -i -s "s/crypto_decode(/crypto_decode_int16(/" ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.c
   endtask
 done
 
@@ -205,7 +236,7 @@ for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for OUT in clean avx2
   do
-    ( cd ${PACKAGE}/${PARAM}/${OUT}/
+    ( cd ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/
     grep "define \(ppad\|qinv\|q18\|q27\|qinvvec\|crypto_core_weight\) " DELETEME*_params.h 2>/dev/null \
       | cut -d":" -f 2 \
       | sort -u \
@@ -221,8 +252,8 @@ done
 endtask
 
 task 'Renaming integer types' 
-sed -i -s '/crypto_u\?int.*\.h/d' ${PACKAGE}/*/*/*.c
-sed -i -s 's/crypto_\(uint\|int\)\(8\|16\|32\|64\)/\1\2_t/' ${PACKAGE}/*/*/*.c
+sed -i -s '/crypto_u\?int.*\.h/d' ${BUILD_CRYPTO_KEM}/*/*/*.c
+sed -i -s 's/crypto_\(uint\|int\)\(8\|16\|32\|64\)/\1\2_t/' ${BUILD_CRYPTO_KEM}/*/*/*.c
 endtask
 
 task 'Substituting PQClean AES, SHA, and API' 
@@ -230,7 +261,7 @@ for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for IMPL in clean avx2
   do
-    ( cd ${PACKAGE}/${PARAM}/${IMPL}
+    ( cd ${BUILD_CRYPTO_KEM}/${PARAM}/${IMPL}
     # Replace crypto_stream_aes256ctr.h with aes.h
     sed -i -s '/crypto_stream_aes256ctr_publicinputs\.h/d' kem.c
     sed -i -s 's/_publicinputs//g' kem.c
@@ -248,19 +279,19 @@ task 'Correcting crypto_core_* declarations and definitions'
 # 2 parameters
 for X in inv3 inv scale3 wforce
 do
-  sed -i -s "s/\(crypto_core_${X}(.*\), \?0, \?0/\1/" ${PACKAGE}/sntru*/*/kem.c
-  sed -i -s 's/, \?const unsigned char .kbytes, \?const unsigned char .cbytes//' ${PACKAGE}/sntru*/*/crypto_core_${X}*
+  sed -i -s "s/\(crypto_core_${X}(.*\), \?0, \?0/\1/" ${BUILD_CRYPTO_KEM}/sntru*/*/kem.c
+  sed -i -s 's/, \?const unsigned char .kbytes, \?const unsigned char .cbytes//' ${BUILD_CRYPTO_KEM}/sntru*/*/crypto_core_${X}*
 done
-sed -i -s "s/\(crypto_core_weight(.*\), \?0, \?0/\1/" ${PACKAGE}/sntru*/*/crypto_core_wforcesntru*
-sed -i -s 's/, \?const unsigned char .kbytes, \?const unsigned char .cbytes//' ${PACKAGE}/sntru*/*/crypto_core_weightsntru*
+sed -i -s "s/\(crypto_core_weight(.*\), \?0, \?0/\1/" ${BUILD_CRYPTO_KEM}/sntru*/*/crypto_core_wforcesntru*
+sed -i -s 's/, \?const unsigned char .kbytes, \?const unsigned char .cbytes//' ${BUILD_CRYPTO_KEM}/sntru*/*/crypto_core_weightsntru*
 # 3 parameters
-sed -i -s "s/\(crypto_core_mult3(.*\), \?0/\1/" ${PACKAGE}/sntru*/*/kem.c
-sed -i -s 's/, \?const unsigned char \*cbytes//' ${PACKAGE}/sntru*/*/crypto_core_mult3*
-sed -i -s "s/\(crypto_core_mult(.*\), \?0/\1/" ${PACKAGE}/*/*/kem.c
-sed -i -s 's/, \?const unsigned char \*cbytes//' ${PACKAGE}/*/*/crypto_core_mult*
+sed -i -s "s/\(crypto_core_mult3(.*\), \?0/\1/" ${BUILD_CRYPTO_KEM}/sntru*/*/kem.c
+sed -i -s 's/, \?const unsigned char \*cbytes//' ${BUILD_CRYPTO_KEM}/sntru*/*/crypto_core_mult3*
+sed -i -s "s/\(crypto_core_mult(.*\), \?0/\1/" ${BUILD_CRYPTO_KEM}/*/*/kem.c
+sed -i -s 's/, \?const unsigned char \*cbytes//' ${BUILD_CRYPTO_KEM}/*/*/crypto_core_mult*
 endtask
 
-MANIFEST=${WORKDIR}/test/duplicate_consistency
+MANIFEST=${BUILD_TEST}/duplicate_consistency
 mkdir -p ${MANIFEST}
 task "Preparing for duplicate consistency"
 ( cd ${MANIFEST}
@@ -268,7 +299,7 @@ for P1 in sntrup653 sntrup761 sntrup857 ntrulpr653 ntrulpr761 ntrulpr857
 do
   for OUT in clean avx2
   do
-    sha1sum ${PACKAGE}/${P1}/${OUT}/*.{h,c} > ${P1}_${OUT}.xxx
+    sha1sum ${BUILD_CRYPTO_KEM}/${P1}/${OUT}/*.{h,c} > ${P1}_${OUT}.xxx
   done
 done
 )
@@ -297,7 +328,7 @@ consistency_checks:" > ${P1}_${OUT}.yml
           X=$(grep $HASH ${P1}_${OUT}.xxx | cut -d ' ' -f 3)
           if [ x${X} != 'x' ]
           then
-            [ -e ${PACKAGE}/${P2}/${OUT}/$(basename $X) ] && \
+            [ -e ${BUILD_CRYPTO_KEM}/${P2}/${OUT}/$(basename $X) ] && \
             echo "\
       - $(basename $X)" >> ${P1}_${OUT}.yml
           fi
@@ -316,7 +347,7 @@ for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for IMPL in clean avx2
   do
-    ( cd ${PACKAGE}/${PARAM}/${IMPL}
+    ( cd ${BUILD_CRYPTO_KEM}/${PARAM}/${IMPL}
     NAMESPACE=PQCLEAN_${PARAM^^}_${IMPL^^}
     for X in $(grep CRYPTO_NAMESPACE *.{c,h} | cut -f2 -d' ' | sort -u); do
       sed -i -s "s/ ${X}/ ${NAMESPACE}_${X}/g" *.c *.h
@@ -348,7 +379,7 @@ for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for IMPL in clean avx2
   do
-    for F in ${PACKAGE}/${PARAM}/${IMPL}/*.h
+    for F in ${BUILD_CRYPTO_KEM}/${PARAM}/${IMPL}/*.h
     do
       GUARD=$(head -n 2 ${F})
       INCL1=$(grep '^#include \"' ${F} | sort)
@@ -356,7 +387,7 @@ do
       REST=$(tail -n+3 ${F} | sed '/^#include/d')
       echo -e "${GUARD}\n${INCL1}\n${INCL2}\n${REST}" > ${F}
     done
-    for F in ${PACKAGE}/${PARAM}/${IMPL}/*.c
+    for F in ${BUILD_CRYPTO_KEM}/${PARAM}/${IMPL}/*.c
     do
       INCL1=$(grep '^#include \"' ${F} | sort)
       INCL2=$(grep '^#include <' ${F} | sort)
@@ -371,11 +402,11 @@ task 'Copying metadata'
 # Makefiles and other metadata
 for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
-  ( cd ${PACKAGE}/${PARAM}/
+  ( cd ${BUILD_CRYPTO_KEM}/${PARAM}/
 
   echo "Public Domain" > clean/LICENSE
   cp -Lp clean/LICENSE avx2/LICENSE
-  cp -Lp ${WORKDIR}/meta/crypto_kem_${PARAM}_META.yml META.yml
+  cp -Lp ${BASE}/meta/crypto_kem_${PARAM}_META.yml META.yml
   echo "\
 principal-submitters:
   - Daniel J. Bernstein
@@ -384,9 +415,9 @@ principal-submitters:
   - Christine van Vredendaal
 implementations:
     - name: clean
-      version: supercop-${VERSION}
+      version: ${VERSION}
     - name: avx2
-      version: supercop-${VERSION}
+      version: ${VERSION}
       supported_platforms:
           - architecture: x86_64
             operating_systems:
@@ -479,10 +510,10 @@ astyle \
   --convert-tabs \
   --mode=c \
   --suffix=none \
-  ${PACKAGE}/*/*/*.{c,h} >/dev/null
+  ${BUILD_CRYPTO_KEM}/*/*/*.{c,h} >/dev/null
 endtask
 
 # Package
 task "Packaging pqclean-ntruprime-$(date +"%Y%m%d").tar.gz"
-tar czf pqclean-ntruprime-$(date +"%Y%m%d").tar.gz crypto_kem test
+tar czf ${BASE}/pqclean-ntruprime-$(date +"%Y%m%d").tar.gz -C ${BUILD} crypto_kem test
 endtask

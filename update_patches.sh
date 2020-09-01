@@ -1,9 +1,12 @@
 V1=supercop-20200826
 V2=supercop-20200826-patched
 
+PYTHON=/usr/bin/python3
+
 WORKDIR=`dirname $0`
 WORKDIR=`cd ${WORKDIR} && pwd`
 PATCHES=${WORKDIR}/patches
+SCRIPTS=${WORKDIR}/scripts
 
 cd ${WORKDIR}
 
