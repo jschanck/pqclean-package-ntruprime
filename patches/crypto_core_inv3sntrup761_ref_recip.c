@@ -45,7 +45,7 @@
      
      sign = -g[0]*f[0];
 -    swap = int16_negative_mask(-delta) & int16_nonzero_mask(g[0]);
-+    swap = int16_negative_mask(-(int16) delta) & int16_nonzero_mask(g[0]);
++    swap = int16_negative_mask((int16) -delta) & int16_nonzero_mask(g[0]);
      delta ^= swap&(delta^-delta);
      delta += 1;
      
@@ -67,7 +67,7 @@
    
    sign = f[0];
 -  for (i = 0;i < p;++i) out[i] = sign*v[p-1-i];
-+  for (i = 0;i < p;++i) out[i] = (small) sign*v[p-1-i];
++  for (i = 0;i < p;++i) out[i] = (small) (sign*v[p-1-i]);
    
 -  out[p] = int16_nonzero_mask(delta);
 +  out[p] = (small) int16_nonzero_mask((int16) delta);

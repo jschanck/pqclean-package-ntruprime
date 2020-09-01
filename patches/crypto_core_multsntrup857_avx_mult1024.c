@@ -191,7 +191,7 @@
  #define h f
    int i;
    int16x16 x;
-@@ -317,9 +402,9 @@
+@@ -317,14 +402,14 @@
      store_x16(&f[i],x);
    }
    for (i = 0;i < p;++i) {
@@ -203,4 +203,10 @@
    }
  
    mult1024(fg,f,g);
+ 
+-  fg[0] -= fg[p-1];
++  fg[0] = (int16) (fg[0] - fg[p-1]);
+   for (i = 0;i < 1024;i += 16) {
+     int16x16 fgi = load_x16(&fg[i]);
+     int16x16 fgip = load_x16(&fg[i + p]);
 diff -ru --no-dereference supercop-20200826/crypto_core/multsntrup857/avx/ntt.c supercop-20200826-patched/crypto_core/multsntrup857/avx/ntt.c
