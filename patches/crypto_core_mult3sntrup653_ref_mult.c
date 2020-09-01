@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/mult3sntrup653/ref/mult.c	2020-08-31 20:12:38.849041888 -0400
-+++ supercop-20200826-patched/crypto_core/mult3sntrup653/ref/mult.c	2020-08-31 20:09:19.711726493 -0400
+--- supercop-20200826/crypto_core/mult3sntrup653/ref/mult.c	2020-08-25 20:26:59.000000000 -0400
++++ supercop-20200826-patched/crypto_core/mult3sntrup653/ref/mult.c	2020-09-01 15:35:25.918448224 -0400
 @@ -10,7 +10,7 @@
  /* works for -16384 <= x < 16384 */
  static small F3_freeze(int16 x)

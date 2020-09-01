@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/653x3/ref/encode.c	2020-08-31 20:12:38.953042531 -0400
-+++ supercop-20200826-patched/crypto_encode/653x3/ref/encode.c	2020-08-31 20:09:19.787727033 -0400
+--- supercop-20200826/crypto_encode/653x3/ref/encode.c	2020-08-25 20:26:58.000000000 -0400
++++ supercop-20200826-patched/crypto_encode/653x3/ref/encode.c	2020-09-01 15:35:26.010447883 -0400
 @@ -12,9 +12,9 @@
  
    for (i = 0;i < p/4;++i) {
@@ -13,4 +13,4 @@
      *s++ = x;
    }
    x = *f++ + 1;
-diff -ru --no-dereference supercop-20200826/crypto_encode/653x4621/avx/encode.c supercop-20200826-patched/crypto_encode/653x4621/avx/encode.c
+diff -ru --no-dereference supercop-20200826/crypto_encode/653xfreeze3/ref/encode.c supercop-20200826-patched/crypto_encode/653xfreeze3/ref/encode.c

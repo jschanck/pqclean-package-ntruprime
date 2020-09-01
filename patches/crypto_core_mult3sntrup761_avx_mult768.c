@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/mult3sntrup761/avx/mult768.c	2020-08-31 20:12:38.849041888 -0400
-+++ supercop-20200826-patched/crypto_core/mult3sntrup761/avx/mult768.c	2020-08-31 20:09:19.715726522 -0400
+--- supercop-20200826/crypto_core/mult3sntrup761/avx/mult768.c	2020-08-25 20:26:59.000000000 -0400
++++ supercop-20200826-patched/crypto_core/mult3sntrup761/avx/mult768.c	2020-09-01 15:35:25.922448209 -0400
 @@ -15,6 +15,21 @@
  #define mulhrs_x16 _mm256_mulhrs_epi16
  #define signmask_x16(x) _mm256_srai_epi16((x),15)
@@ -66,7 +66,7 @@
  #define h f
    int i;
    int16x16 x;
-@@ -210,14 +227,14 @@
+@@ -210,19 +227,19 @@
    for (i = p&~15;i < 768;i += 16) store_x16(&g[i],x);
  
    for (i = 0;i < p;++i) {
@@ -85,6 +85,12 @@
    }
  
    mult768(fg,f,g);
+ 
+-  fg[0] -= fg[p-1];
++  fg[0] = (int16) (fg[0] - fg[p-1]);
+   for (i = 0;i < 768;i += 16) {
+     int16x16 fgi = load_x16(&fg[i]);
+     int16x16 fgip = load_x16(&fg[i + p]);
 @@ -232,7 +249,7 @@
      store_x16(&h[i],x);
    }

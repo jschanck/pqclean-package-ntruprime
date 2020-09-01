@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/inv3sntrup761/ref/recip.c	2020-08-31 20:12:38.825041740 -0400
-+++ supercop-20200826-patched/crypto_core/inv3sntrup761/ref/recip.c	2020-08-31 20:09:19.687726323 -0400
+--- supercop-20200826/crypto_core/inv3sntrup761/ref/recip.c	2020-08-25 20:26:59.000000000 -0400
++++ supercop-20200826-patched/crypto_core/inv3sntrup761/ref/recip.c	2020-09-01 15:35:25.894448313 -0400
 @@ -18,17 +18,17 @@
  /* return -1 if x!=0; else return 0 */
  static int int16_nonzero_mask(int16 x)
@@ -72,4 +72,4 @@
 +  out[p] = (small) int16_nonzero_mask((int16) delta);
    return 0;
  } 
-diff -ru --no-dereference supercop-20200826/crypto_core/inv3sntrup857/avx/r3_recip.c supercop-20200826-patched/crypto_core/inv3sntrup857/avx/r3_recip.c
+diff -ru --no-dereference supercop-20200826/crypto_core/inv3sntrup857/ref/recip.c supercop-20200826-patched/crypto_core/inv3sntrup857/ref/recip.c

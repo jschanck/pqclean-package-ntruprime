@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_verify/1167/avx/verify.c	2020-08-31 20:12:39.009042876 -0400
-+++ supercop-20200826-patched/crypto_verify/1167/avx/verify.c	2020-08-31 20:09:19.827727317 -0400
+--- supercop-20200826/crypto_verify/1167/avx/verify.c	2020-08-25 20:26:58.000000000 -0400
++++ supercop-20200826-patched/crypto_verify/1167/avx/verify.c	2020-09-01 15:35:26.054447719 -0400
 @@ -26,10 +26,10 @@
    diff |= _mm256_srli_epi32(diff,16);
    diff |= _mm256_srli_epi64(diff,32);

@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_kem/ntrulpr761/factored/kem.c	2020-08-31 20:12:38.997042801 -0400
-+++ supercop-20200826-patched/crypto_kem/ntrulpr761/factored/kem.c	2020-08-31 20:09:19.819727260 -0400
+--- supercop-20200826/crypto_kem/ntrulpr761/factored/kem.c	2020-08-25 20:27:06.000000000 -0400
++++ supercop-20200826-patched/crypto_kem/ntrulpr761/factored/kem.c	2020-09-01 15:35:26.042447764 -0400
 @@ -24,7 +24,7 @@
  /* return -1 if x<0; otherwise return 0 */
  static int int16_negative_mask(int16 x)
@@ -29,8 +29,9 @@
 +  x -= (uint32) (q*((x*(uint64)q31)>>31));
 +  x -= (uint32) (q*((x*(uint64)q31)>>31));
    x -= q;
-   x += (-(x>>31))&(uint32)q;
+-  x += (-(x>>31))&(uint32)q;
 -  return x;
++  x += (~(x>>31)+1)&(uint32)q;
 +  return (Fq) x;
  }
  

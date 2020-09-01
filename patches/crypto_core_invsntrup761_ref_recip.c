@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/invsntrup761/ref/recip.c	2020-08-31 20:12:38.837041815 -0400
-+++ supercop-20200826-patched/crypto_core/invsntrup761/ref/recip.c	2020-08-31 20:09:19.699726408 -0400
+--- supercop-20200826/crypto_core/invsntrup761/ref/recip.c	2020-08-25 20:26:59.000000000 -0400
++++ supercop-20200826-patched/crypto_core/invsntrup761/ref/recip.c	2020-09-01 15:35:25.906448268 -0400
 @@ -18,17 +18,17 @@
  /* return -1 if x!=0; else return 0 */
  static int int16_nonzero_mask(int16 x)

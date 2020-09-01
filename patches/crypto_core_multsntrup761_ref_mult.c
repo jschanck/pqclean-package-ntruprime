@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_core/multsntrup761/ref/mult.c	2020-08-31 20:12:38.877042062 -0400
-+++ supercop-20200826-patched/crypto_core/multsntrup761/ref/mult.c	2020-08-31 20:09:19.731726635 -0400
+--- supercop-20200826/crypto_core/multsntrup761/ref/mult.c	2020-08-25 20:26:59.000000000 -0400
++++ supercop-20200826-patched/crypto_core/multsntrup761/ref/mult.c	2020-09-01 15:35:25.958448076 -0400
 @@ -17,7 +17,7 @@
  {
    x -= q*((q18*x)>>18);

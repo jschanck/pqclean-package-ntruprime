@@ -1,5 +1,5 @@
---- supercop-20200826/crypto_encode/857x1723round/ref/encode.c	2020-08-31 20:12:38.981042704 -0400
-+++ supercop-20200826-patched/crypto_encode/857x1723round/ref/encode.c	2020-08-31 20:09:19.807727175 -0400
+--- supercop-20200826/crypto_encode/857x1723round/ref/encode.c	2020-08-25 20:26:58.000000000 -0400
++++ supercop-20200826-patched/crypto_encode/857x1723round/ref/encode.c	2020-09-01 15:35:26.030447808 -0400
 @@ -12,6 +12,6 @@
    int16 x[p];
    int i;
