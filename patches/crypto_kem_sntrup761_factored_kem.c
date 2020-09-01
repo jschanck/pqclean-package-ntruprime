@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_kem/sntrup761/factored/kem.c	2020-08-31 19:56:55.607748540 -0400
+--- supercop-20200826/crypto_kem/sntrup761/factored/kem.c	2020-08-31 20:12:38.997042801 -0400
 +++ supercop-20200826-patched/crypto_kem/sntrup761/factored/kem.c	2020-08-31 20:09:19.819727260 -0400
 @@ -74,24 +74,36 @@
  {

@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/857x3/avx/encode.c	2020-08-31 19:56:55.599748407 -0400
+--- supercop-20200826/crypto_encode/857x3/avx/encode.c	2020-08-31 20:12:38.985042728 -0400
 +++ supercop-20200826-patched/crypto_encode/857x3/avx/encode.c	2020-08-31 20:09:19.807727175 -0400
 @@ -7,13 +7,17 @@
  #define loops 7

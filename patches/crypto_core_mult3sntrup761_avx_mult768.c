@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/mult3sntrup761/avx/mult768.c	2020-08-31 19:56:55.507746884 -0400
+--- supercop-20200826/crypto_core/mult3sntrup761/avx/mult768.c	2020-08-31 20:12:38.849041888 -0400
 +++ supercop-20200826-patched/crypto_core/mult3sntrup761/avx/mult768.c	2020-08-31 20:09:19.715726522 -0400
 @@ -15,6 +15,21 @@
  #define mulhrs_x16 _mm256_mulhrs_epi16

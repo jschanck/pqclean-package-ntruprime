@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/256x2/ref/encode.c	2020-08-31 19:56:55.575748009 -0400
+--- supercop-20200826/crypto_encode/256x2/ref/encode.c	2020-08-31 20:12:38.941042457 -0400
 +++ supercop-20200826-patched/crypto_encode/256x2/ref/encode.c	2020-08-31 20:09:19.783727004 -0400
 @@ -5,5 +5,5 @@
    const unsigned char *r = v;

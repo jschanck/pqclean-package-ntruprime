@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/653x1541round/ref/encode.c	2020-08-31 19:56:55.579748076 -0400
+--- supercop-20200826/crypto_encode/653x1541round/ref/encode.c	2020-08-31 20:12:38.949042506 -0400
 +++ supercop-20200826-patched/crypto_encode/653x1541round/ref/encode.c	2020-08-31 20:09:19.787727033 -0400
 @@ -12,6 +12,6 @@
    int16 x[p];

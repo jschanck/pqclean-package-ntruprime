@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/inv3sntrup761/ref/recip.c	2020-08-31 19:56:55.491746618 -0400
+--- supercop-20200826/crypto_core/inv3sntrup761/ref/recip.c	2020-08-31 20:12:38.825041740 -0400
 +++ supercop-20200826-patched/crypto_core/inv3sntrup761/ref/recip.c	2020-08-31 20:09:19.687726323 -0400
 @@ -18,17 +18,17 @@
  /* return -1 if x!=0; else return 0 */

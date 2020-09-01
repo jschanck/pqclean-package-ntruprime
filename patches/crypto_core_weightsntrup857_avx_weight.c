@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/weightsntrup857/avx/weight.c	2020-08-31 19:56:55.539747414 -0400
+--- supercop-20200826/crypto_core/weightsntrup857/avx/weight.c	2020-08-31 20:12:38.889042136 -0400
 +++ supercop-20200826-patched/crypto_core/weightsntrup857/avx/weight.c	2020-08-31 20:09:19.743726720 -0400
 @@ -18,7 +18,7 @@
    int16 weight;

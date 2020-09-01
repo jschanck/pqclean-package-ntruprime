@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/multsntrup653/avx/ntt.h	2020-08-31 19:56:55.519747083 -0400
+--- supercop-20200826/crypto_core/multsntrup653/avx/ntt.h	2020-08-31 20:12:38.865041988 -0400
 +++ supercop-20200826-patched/crypto_core/multsntrup653/avx/ntt.h	2020-08-31 20:09:19.727726607 -0400
 @@ -8,9 +8,9 @@
  #define invntt512_7681 CRYPTO_NAMESPACE(invntt512_7681)

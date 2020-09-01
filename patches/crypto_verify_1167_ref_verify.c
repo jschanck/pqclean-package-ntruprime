@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_verify/1167/ref/verify.c	2020-08-31 19:56:55.615748673 -0400
+--- supercop-20200826/crypto_verify/1167/ref/verify.c	2020-08-31 20:12:39.009042876 -0400
 +++ supercop-20200826-patched/crypto_verify/1167/ref/verify.c	2020-08-31 20:09:19.827727317 -0400
 @@ -8,5 +8,5 @@
    for (i = 0;i < crypto_verify_BYTES;++i)

@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/multsntrup653/ref/mult.c	2020-08-31 19:56:55.523747148 -0400
+--- supercop-20200826/crypto_core/multsntrup653/ref/mult.c	2020-08-31 20:12:38.869042012 -0400
 +++ supercop-20200826-patched/crypto_core/multsntrup653/ref/mult.c	2020-08-31 20:09:19.727726607 -0400
 @@ -17,7 +17,7 @@
  {

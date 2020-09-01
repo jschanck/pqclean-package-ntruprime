@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/256x16/ref/encode.c	2020-08-31 19:56:55.571747944 -0400
+--- supercop-20200826/crypto_encode/256x16/ref/encode.c	2020-08-31 20:12:38.937042432 -0400
 +++ supercop-20200826-patched/crypto_encode/256x16/ref/encode.c	2020-08-31 20:09:19.779726976 -0400
 @@ -5,5 +5,5 @@
    const unsigned char *T = v;

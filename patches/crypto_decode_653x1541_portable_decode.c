@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_decode/653x1541/portable/decode.c	2020-08-31 19:56:55.551747613 -0400
+--- supercop-20200826/crypto_decode/653x1541/portable/decode.c	2020-08-31 20:12:38.905042235 -0400
 +++ supercop-20200826-patched/crypto_decode/653x1541/portable/decode.c	2020-08-31 20:09:19.755726805 -0400
 @@ -34,7 +34,7 @@
  

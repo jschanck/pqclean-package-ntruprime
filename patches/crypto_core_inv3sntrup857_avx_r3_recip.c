@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/inv3sntrup857/avx/r3_recip.c	2020-08-31 19:56:55.491746618 -0400
+--- supercop-20200826/crypto_core/inv3sntrup857/avx/r3_recip.c	2020-08-31 20:12:38.829041766 -0400
 +++ supercop-20200826-patched/crypto_core/inv3sntrup857/avx/r3_recip.c	2020-08-31 20:09:19.691726351 -0400
 @@ -162,7 +162,7 @@
    vec256_tobits(V1,v1);

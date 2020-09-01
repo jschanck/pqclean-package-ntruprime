@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/761xfreeze3/ref/encode.c	2020-08-31 19:56:55.595748342 -0400
+--- supercop-20200826/crypto_encode/761xfreeze3/ref/encode.c	2020-08-31 20:12:38.973042653 -0400
 +++ supercop-20200826-patched/crypto_encode/761xfreeze3/ref/encode.c	2020-08-31 20:09:19.803727146 -0400
 @@ -11,9 +11,9 @@
  /* all inputs: 3 divides x-F3_freeze(x) */

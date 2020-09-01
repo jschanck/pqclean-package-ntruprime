@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_decode/761x4591/int16/decode.c	2020-08-31 19:56:55.559747745 -0400
+--- supercop-20200826/crypto_decode/761x4591/int16/decode.c	2020-08-31 20:12:38.921042332 -0400
 +++ supercop-20200826-patched/crypto_decode/761x4591/int16/decode.c	2020-08-31 20:09:19.767726890 -0400
 @@ -43,7 +43,7 @@
    a0 = mulhi(a0,-3624)-mulhi(lo,9470); /* -5011...5046 */

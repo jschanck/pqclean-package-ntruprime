@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_decode/857x1723/avx/decode.c	2020-08-31 19:56:55.563747812 -0400
+--- supercop-20200826/crypto_decode/857x1723/avx/decode.c	2020-08-31 20:12:38.925042358 -0400
 +++ supercop-20200826-patched/crypto_decode/857x1723/avx/decode.c	2020-08-31 20:09:19.771726919 -0400
 @@ -14,7 +14,7 @@
  

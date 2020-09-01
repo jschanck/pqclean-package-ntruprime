@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_decode/653xint16/ref/decode.c	2020-08-31 19:56:55.555747678 -0400
+--- supercop-20200826/crypto_decode/653xint16/ref/decode.c	2020-08-31 20:12:38.913042284 -0400
 +++ supercop-20200826-patched/crypto_decode/653xint16/ref/decode.c	2020-08-31 20:09:19.759726834 -0400
 @@ -9,8 +9,7 @@
    for (i = 0;i < 653;++i) {

@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_decode/int16/ref/decode.c	2020-08-31 19:56:55.571747944 -0400
+--- supercop-20200826/crypto_decode/int16/ref/decode.c	2020-08-31 20:12:38.937042432 -0400
 +++ supercop-20200826-patched/crypto_decode/int16/ref/decode.c	2020-08-31 20:09:19.779726976 -0400
 @@ -5,6 +5,6 @@
  {

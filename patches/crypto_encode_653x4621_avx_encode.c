@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/653x4621/avx/encode.c	2020-08-31 19:56:55.579748076 -0400
+--- supercop-20200826/crypto_encode/653x4621/avx/encode.c	2020-08-31 20:12:38.953042531 -0400
 +++ supercop-20200826-patched/crypto_encode/653x4621/avx/encode.c	2020-08-31 20:09:19.787727033 -0400
 @@ -19,6 +19,7 @@
    uint16 *writing;

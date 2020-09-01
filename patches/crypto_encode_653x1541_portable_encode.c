@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/653x1541/portable/encode.c	2020-08-31 19:56:55.575748009 -0400
+--- supercop-20200826/crypto_encode/653x1541/portable/encode.c	2020-08-31 20:12:38.945042481 -0400
 +++ supercop-20200826-patched/crypto_encode/653x1541/portable/encode.c	2020-08-31 20:09:19.783727004 -0400
 @@ -18,21 +18,21 @@
    uint32 r2;

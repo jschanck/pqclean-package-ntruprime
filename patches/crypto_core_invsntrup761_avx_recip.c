@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_core/invsntrup761/avx/recip.c	2020-08-31 19:56:55.499746751 -0400
+--- supercop-20200826/crypto_core/invsntrup761/avx/recip.c	2020-08-31 20:12:38.837041815 -0400
 +++ supercop-20200826-patched/crypto_core/invsntrup761/avx/recip.c	2020-08-31 20:09:19.699726408 -0400
 @@ -20,11 +20,11 @@
  /* return -1 if x!=0; else return 0 */

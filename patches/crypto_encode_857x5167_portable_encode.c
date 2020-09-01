@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/857x5167/portable/encode.c	2020-08-31 19:56:55.603748474 -0400
+--- supercop-20200826/crypto_encode/857x5167/portable/encode.c	2020-08-31 20:12:38.989042753 -0400
 +++ supercop-20200826-patched/crypto_encode/857x5167/portable/encode.c	2020-08-31 20:09:19.811727204 -0400
 @@ -21,9 +21,9 @@
      r0 = (R0[2*i]+2583)&16383;

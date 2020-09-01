@@ -1,4 +1,4 @@
---- supercop-20200826/crypto_encode/761xint16/ref/encode.c	2020-08-31 19:56:55.595748342 -0400
+--- supercop-20200826/crypto_encode/761xint16/ref/encode.c	2020-08-31 20:12:38.977042679 -0400
 +++ supercop-20200826-patched/crypto_encode/761xint16/ref/encode.c	2020-08-31 20:09:19.803727146 -0400
 @@ -8,7 +8,7 @@
  
