@@ -10,4 +10,4 @@
 +extern void invntt512_7681(int16_t *f,int reps);
  
  #endif
-diff -ru --no-dereference supercop-20200826/crypto_core/mult3sntrup761/ref/mult.c supercop-20200826-patched/crypto_core/mult3sntrup761/ref/mult.c
+

@@ -34,4 +34,4 @@
 +  for (i = w;i < p;++i) out[i] = (small) (in[i]&~mask);
    return 0;
  }
-diff -ru --no-dereference supercop-20200826/crypto_core/wforcesntrup857/avx/wforce.c supercop-20200826-patched/crypto_core/wforcesntrup857/avx/wforce.c
+

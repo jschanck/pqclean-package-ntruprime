@@ -396,4 +396,4 @@
  }
  
  void crypto_sort(void *array,long long n)
-diff -ru --no-dereference supercop-20200826/crypto_sort/int32/x86/sort.c supercop-20200826-patched/crypto_sort/int32/x86/sort.c
+

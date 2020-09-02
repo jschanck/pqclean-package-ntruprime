@@ -21,4 +21,4 @@
    }
  
    for (i = 0;i < p;++i) {
-diff -ru --no-dereference supercop-20200826/crypto_core/multsntrup857/avx/mult1024.c supercop-20200826-patched/crypto_core/multsntrup857/avx/mult1024.c
+

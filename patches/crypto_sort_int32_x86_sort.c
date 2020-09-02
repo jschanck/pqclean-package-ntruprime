@@ -73,4 +73,4 @@
          x[j + p] = a;
          ++j;
        }
-diff -ru --no-dereference supercop-20200826/crypto_sort/uint32/useint32/sort.c supercop-20200826-patched/crypto_sort/uint32/useint32/sort.c
+

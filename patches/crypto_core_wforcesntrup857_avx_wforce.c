@@ -12,4 +12,4 @@
  
    i = w-32;
    for (;;) {
-diff -ru --no-dereference supercop-20200826/crypto_core/wforcesntrup857/ref/wforce.c supercop-20200826-patched/crypto_core/wforcesntrup857/ref/wforce.c
+

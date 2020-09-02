@@ -21,4 +21,4 @@
    }
  
    for (i = 0;i < p;++i) {
-diff -ru --no-dereference supercop-20200826/crypto_core/weightsntrup653/avx/weight.c supercop-20200826-patched/crypto_core/weightsntrup653/avx/weight.c
+

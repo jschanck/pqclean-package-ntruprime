@@ -95,4 +95,4 @@
    for (i = 0;i < 768;i += 16) {
      int16x16 fgi = load_x16(&fg[i]);
      int16x16 fgip = load_x16(&fg[i + p]);
-diff -ru --no-dereference supercop-20200826/crypto_core/multsntrup653/avx/ntt.c supercop-20200826-patched/crypto_core/multsntrup653/avx/ntt.c
+

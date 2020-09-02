@@ -20,4 +20,4 @@
  
    crypto_encode_int16(outbytes,&weight);
    return 0;
-diff -ru --no-dereference supercop-20200826/crypto_core/wforcesntrup653/avx/wforce.c supercop-20200826-patched/crypto_core/wforcesntrup653/avx/wforce.c
+

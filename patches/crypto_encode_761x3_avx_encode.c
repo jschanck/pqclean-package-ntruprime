@@ -24,4 +24,4 @@
  
  void crypto_encode(unsigned char *s,const void *v)
  {
-diff -ru --no-dereference supercop-20200826/crypto_encode/761x3/ref/encode.c supercop-20200826-patched/crypto_encode/761x3/ref/encode.c
+

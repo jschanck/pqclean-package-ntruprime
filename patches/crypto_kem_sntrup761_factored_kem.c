@@ -66,4 +66,4 @@
      Hash(k,x,sizeof x);
    }
    return 0;
-diff -ru --no-dereference supercop-20200826/crypto_kem/sntrup761/factored/params.h supercop-20200826-patched/crypto_kem/sntrup761/factored/params.h
+

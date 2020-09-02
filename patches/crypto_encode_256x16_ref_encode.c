@@ -7,4 +7,4 @@
 -    s[i] = T[2*i]+(T[2*i+1]<<4);
 +    s[i] = (unsigned char) (T[2*i]+(T[2*i+1]<<4));
  }
-diff -ru --no-dereference supercop-20200826/crypto_encode/256x2/avx/encode.c supercop-20200826-patched/crypto_encode/256x2/avx/encode.c
+

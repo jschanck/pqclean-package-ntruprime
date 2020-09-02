@@ -56,4 +56,4 @@
 +  outbytes[2*p] = (unsigned char) int16_nonzero_mask((int16) delta);
    return 0;
  }
-diff -ru --no-dereference supercop-20200826/crypto_core/invsntrup857/avx/recip.c supercop-20200826-patched/crypto_core/invsntrup857/avx/recip.c
+

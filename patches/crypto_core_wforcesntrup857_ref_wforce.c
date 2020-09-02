@@ -34,4 +34,4 @@
 +  for (i = w;i < p;++i) out[i] = (small) (in[i]&~mask);
    return 0;
  }
-diff -ru --no-dereference supercop-20200826/crypto_decode/256x2/avx/decode.c supercop-20200826-patched/crypto_decode/256x2/avx/decode.c
+

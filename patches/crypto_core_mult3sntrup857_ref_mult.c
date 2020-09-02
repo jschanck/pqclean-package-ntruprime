@@ -40,4 +40,4 @@
      fg[i] = F3_freeze(result);
    }
  
-diff -ru --no-dereference supercop-20200826/crypto_core/multsntrup653/avx/mult768.c supercop-20200826-patched/crypto_core/multsntrup653/avx/mult768.c
+

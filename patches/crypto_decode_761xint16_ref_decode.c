@@ -10,4 +10,4 @@
      x += 1;
      s += 2;
    }
-diff -ru --no-dereference supercop-20200826/crypto_decode/857x3/avx/decode.c supercop-20200826-patched/crypto_decode/857x3/avx/decode.c
+

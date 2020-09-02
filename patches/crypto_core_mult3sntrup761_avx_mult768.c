@@ -100,4 +100,4 @@
  
    return 0;
  }
-diff -ru --no-dereference supercop-20200826/crypto_core/mult3sntrup761/avx/ntt.c supercop-20200826-patched/crypto_core/mult3sntrup761/avx/ntt.c
+

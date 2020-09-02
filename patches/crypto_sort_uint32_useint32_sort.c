@@ -8,4 +8,4 @@
 +  crypto_sort_int32((int32_t *)array,n);
    for (j = 0;j < n;++j) x[j] ^= 0x80000000;
  }
-diff -ru --no-dereference supercop-20200826/crypto_verify/1025/avx/verify.c supercop-20200826-patched/crypto_verify/1025/avx/verify.c
+

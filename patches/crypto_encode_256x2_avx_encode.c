@@ -45,4 +45,4 @@
 +  *s++ = (unsigned char) c7; c7 >>= 8;
 +  *s++ = (unsigned char) c7;
  }
-diff -ru --no-dereference supercop-20200826/crypto_encode/256x2/ref/encode.c supercop-20200826-patched/crypto_encode/256x2/ref/encode.c
+

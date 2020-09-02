@@ -8,4 +8,4 @@
 +  u1 = (crypto_uint16) (u1 << 8);
    *(crypto_uint16 *) x = u0 | u1;
  }
-diff -ru --no-dereference supercop-20200826/crypto_encode/256x16/ref/encode.c supercop-20200826-patched/crypto_encode/256x16/ref/encode.c
+

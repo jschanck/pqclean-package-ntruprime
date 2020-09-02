@@ -128,4 +128,4 @@
 -  invntt512(f,reps,(const __m256i *) qdata_10753);
 +  invntt512(f,reps,(const __m256i *) qdata_10753.data);
  }
-diff -ru --no-dereference supercop-20200826/crypto_core/multsntrup761/avx/ntt.h supercop-20200826-patched/crypto_core/multsntrup761/avx/ntt.h
+

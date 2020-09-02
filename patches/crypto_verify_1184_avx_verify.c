@@ -16,4 +16,4 @@
 -  return (1 & ((differentbits - 1) >> 8)) - 1;
 +  return (int) (1 & ((differentbits - 1) >> 8)) - 1;
  }
-diff -ru --no-dereference supercop-20200826/crypto_verify/1184/ref/verify.c supercop-20200826-patched/crypto_verify/1184/ref/verify.c
+

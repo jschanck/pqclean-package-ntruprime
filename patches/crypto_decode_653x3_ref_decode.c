@@ -17,4 +17,4 @@
 -  *f++ = ((uint8)(x&3))-1;
 +  *f++ = (uint8) ((x&3)-1);
  }
-diff -ru --no-dereference supercop-20200826/crypto_decode/653xint16/ref/decode.c supercop-20200826-patched/crypto_decode/653xint16/ref/decode.c
+
