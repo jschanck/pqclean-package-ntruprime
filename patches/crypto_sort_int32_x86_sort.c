@@ -1,6 +1,6 @@
 --- supercop-20200826/crypto_sort/int32/x86/sort.c
 +++ supercop-20200826-patched/crypto_sort/int32/x86/sort.c
-@@ -1,11 +1,21 @@
+@@ -1,13 +1,24 @@
 -#include "crypto_sort.h"
 -#include "crypto_int32.h"
 -#define int32 crypto_int32
@@ -25,9 +25,13 @@
 -static void crypto_sort_smallindices(int32 *x,int32 n)
 +void crypto_sort(int32_t *x,long long n)
  {
-   int32 top,p,q,r,i,j;
+-  int32 top,p,q,r,i,j;
++  int32 top,p,q,r,i;
++  long long j;
  
-@@ -25,78 +35,18 @@
+   top = 1;
+   while (top < n - top) top += top;
+@@ -25,78 +36,18 @@
      i = 0;
      j = 0;
      for (q = top;q > p;q >>= 1) {
