@@ -26,7 +26,6 @@
  } while(0)
  
 -__attribute__((noinline))
--static void minmax_vector(int32 *x,int32 *y,long long n)
 +static inline void int32_MINMAX(int32 *a, int32 *b) {
 +    int32 ab = *b ^ *a;
 +    int32 c = (int32)((int64_t)*b - (int64_t)*a);
@@ -37,26 +36,15 @@
 +    *b ^= c;
 +}
 +
-+static void minmax_vector(int32 *x,int32 *y,size_t n)
+ static void minmax_vector(int32 *x,int32 *y,long long n)
  {
--  if (n < 8) {
--    while (n > 0) {
+   if (n < 8) {
+     while (n > 0) {
 -      int32_MINMAX(*x,*y);
-+  if ((long long) n < 8) {
-+    while ((long long) n > 0) {
 +      int32_MINMAX(x,y);
        ++x;
        ++y;
        --n;
-@@ -36,7 +43,7 @@
-     int32x8_MINMAX(x0,y0);
-     int32x8_store(x + n - 8,x0);
-     int32x8_store(y + n - 8,y0);
--    n &= ~7;
-+    n &= ~(size_t) 7;
-   }
-   do {
-     int32x8 x0 = int32x8_load(x);
 @@ -51,7 +58,6 @@
  }
  
@@ -65,36 +53,29 @@
  static void merge16_finish(int32 *x,int32x8 x0,int32x8 x1,int flagdown)
  {
    int32x8 b0,b1,c0,c1,mask;
-@@ -93,10 +99,9 @@
+@@ -93,7 +99,6 @@
  }
  
  /* stages 64,32 of bitonic merging; n is multiple of 128 */
 -__attribute__((noinline))
--static void int32_twostages_32(int32 *x,long long n)
-+static void int32_twostages_32(int32 *x,size_t n)
+ static void int32_twostages_32(int32 *x,long long n)
  {
--  long long i;
-+  size_t i;
- 
-   while (n > 0) {
-     for (i = 0;i < 32;i += 8) {
+   long long i;
 @@ -121,12 +126,11 @@
  }
  
  /* stages 4q,2q,q of bitonic merging */
 -__attribute__((noinline))
--static long long int32_threestages(int32 *x,long long n,long long q)
-+static size_t int32_threestages(int32 *x,size_t n,size_t q)
+ static long long int32_threestages(int32 *x,long long n,long long q)
  {
--  long long k,i;
-+  size_t k,i;
+   long long k,i;
  
 -  for (k = 0;k + 8*q <= n;k += 8*q)
 +  for (k = 0;k + 8*q <= n;k += 8*q) {
      for (i = k;i < k + q;i += 8) {
        int32x8 x0 = int32x8_load(&x[i]);
        int32x8 x1 = int32x8_load(&x[i+q]);
-@@ -159,14 +163,15 @@
+@@ -159,14 +163,16 @@
        int32x8_store(&x[i+6*q],x6);
        int32x8_store(&x[i+7*q],x7);
      }
@@ -105,15 +86,15 @@
  
  /* n is a power of 2; n >= 8; if n == 8 then flagdown */
 -__attribute__((noinline))
--static void int32_sort_2power(int32 *x,long long n,int flagdown)
--{ long long p,q,i,j,k;
 +// NOLINTNEXTLINE(google-readability-function-size)
-+static void int32_sort_2power(int32 *x,size_t n,int flagdown) {
-+  size_t p,q,i,j,k;
+ static void int32_sort_2power(int32 *x,long long n,int flagdown)
+-{ long long p,q,i,j,k;
++{
++  long long p,q,i,j,k;
    int32x8 mask;
  
    if (n == 8) {
-@@ -181,29 +186,29 @@
+@@ -181,29 +187,29 @@
  
      /* odd-even sort instead of bitonic sort */
  
@@ -166,7 +147,7 @@
  
      x[0] = x0;
      x[1] = x1;
-@@ -387,7 +392,7 @@
+@@ -387,7 +393,7 @@
        }
        if (q == 32) {
          q = 8;
@@ -175,7 +156,7 @@
            for (i = k;i < k + q;i += 8) {
              int32x8 x0 = int32x8_load(&x[i]);
              int32x8 x1 = int32x8_load(&x[i+q]);
-@@ -420,11 +425,12 @@
+@@ -420,11 +426,12 @@
              int32x8_store(&x[i+6*q],x6);
              int32x8_store(&x[i+7*q],x7);
            }
@@ -189,7 +170,7 @@
            for (i = k;i < k + q;i += 8) {
              int32x8 x0 = int32x8_load(&x[i]);
              int32x8 x1 = int32x8_load(&x[i+q]);
-@@ -441,9 +447,10 @@
+@@ -441,9 +448,10 @@
              int32x8_store(&x[i+2*q],x2);
              int32x8_store(&x[i+3*q],x3);
            }
@@ -201,7 +182,7 @@
          for (k = 0;k < n;k += q + q) {
            int32x8 x0 = int32x8_load(&x[k]);
            int32x8 x1 = int32x8_load(&x[k+q]);
-@@ -453,7 +460,8 @@
+@@ -453,7 +461,8 @@
            int32x8_store(&x[k],x0);
            int32x8_store(&x[k+q],x1);
          }
@@ -211,7 +192,7 @@
        q = n>>3;
        flip = (p<<1 == q);
        flipflip = !flip;
-@@ -572,7 +580,7 @@
+@@ -572,7 +581,7 @@
      }
      while (q >= 16) {
        q >>= 1;
@@ -220,7 +201,7 @@
          for (k = j;k < j + q;k += 8) {
            int32x8 x0 = int32x8_load(&x[k]);
            int32x8 x1 = int32x8_load(&x[k+q]);
-@@ -589,6 +597,7 @@
+@@ -589,6 +598,7 @@
            int32x8_store(&x[k+2*q],x2);
            int32x8_store(&x[k+3*q],x3);
          }
@@ -228,7 +209,7 @@
        q >>= 1;
      }
      if (q == 8) {
-@@ -743,7 +752,7 @@
+@@ -743,7 +753,7 @@
    q = n>>4;
    while (q >= 128 || q == 32) {
      q >>= 2;
@@ -237,7 +218,7 @@
        for (i = j;i < j + q;i += 8) {
          int32x8 x0 = int32x8_load(&x[i]);
          int32x8 x1 = int32x8_load(&x[i+q]);
-@@ -774,11 +783,12 @@
+@@ -774,11 +784,12 @@
          int32x8_store(&x[i+6*q],x6);
          int32x8_store(&x[i+7*q],x7);
        }
@@ -251,7 +232,7 @@
        for (i = j;i < j + q;i += 8) {
          int32x8 x0 = int32x8_load(&x[i]);
          int32x8 x1 = int32x8_load(&x[i+q]);
-@@ -793,9 +803,10 @@
+@@ -793,9 +804,10 @@
          int32x8_store(&x[i+2*q],x2);
          int32x8_store(&x[i+3*q],x3);
        }
@@ -263,7 +244,7 @@
      for (j = 0;j < n;j += q + q) {
        int32x8 x0 = int32x8_load(&x[j]);
        int32x8 x1 = int32x8_load(&x[j+q]);
-@@ -803,6 +814,7 @@
+@@ -803,6 +815,7 @@
        int32x8_store(&x[j],x0);
        int32x8_store(&x[j+q],x1);
      }
@@ -271,13 +252,11 @@
  
    q = n>>3;
    for (i = 0;i < q;i += 8) {
-@@ -877,51 +889,52 @@
-   }
+@@ -878,50 +891,51 @@
  }
  
--static void int32_sort(int32 *x,long long n)
+ static void int32_sort(int32 *x,long long n)
 -{ long long q,i,j;
-+void crypto_sort(int32_t *x, long long n)
 +{
 +  long long q,i,j;
  
@@ -354,7 +333,7 @@
      }
      return;
    }
-@@ -938,14 +951,14 @@
+@@ -938,9 +952,9 @@
    if (q <= 128) { /* n <= 256 */
      int32x8 y[32];
      for (i = q>>3;i < q>>2;++i) y[i] = _mm256_set1_epi32(0x7fffffff);
@@ -366,13 +345,7 @@
      return;
    }
  
-   int32_sort_2power(x,q,1);
--  int32_sort(x + q,n - q);
-+  crypto_sort(x + q,n - q);
- 
-   while (q >= 64) {
-     q >>= 2;
-@@ -1156,35 +1169,28 @@
+@@ -1156,32 +1170,32 @@
    }
    minmax_vector(x + j,x + j + 8,n - 8 - j);
    if (j + 8 <= n) {
@@ -414,16 +387,13 @@
 +    int32_MINMAX(&x[j+2],&x[j+3]);
      j += 4;
    }
--  if (j + 3 <= n)
+   if (j + 3 <= n)
 -    int32_MINMAX(x[j],x[j+2]);
--  if (j + 2 <= n)
++    int32_MINMAX(&x[j],&x[j+2]);
+   if (j + 2 <= n)
 -    int32_MINMAX(x[j],x[j+1]);
--}
--
--void crypto_sort(void *array,long long n)
--{ 
--  int32_sort(array,n);
-+  if (j + 3 <= n) int32_MINMAX(&x[j],&x[j+2]);
-+  if (j + 2 <= n) int32_MINMAX(&x[j],&x[j+1]);
++    int32_MINMAX(&x[j],&x[j+1]);
  }
+ 
+ void crypto_sort(void *array,long long n)
 diff -ru --no-dereference supercop-20200826/crypto_sort/int32/x86/sort.c supercop-20200826-patched/crypto_sort/int32/x86/sort.c

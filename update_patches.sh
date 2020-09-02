@@ -2,23 +2,23 @@ PYTHON=/usr/bin/python3
 
 WORKDIR=`dirname $0`
 WORKDIR=`cd ${WORKDIR} && pwd`
+cd ${WORKDIR}
+
 PATCHES=${WORKDIR}/patches
 SCRIPTS=${WORKDIR}/scripts
 
-cd ${WORKDIR}
-
-V1=$(cat VERSION)
+V1=$(cat ${WORKDIR}/VERSION)
 V2=${V1}-patched
 
 if [ ! -e "${V1}" ]
 then
-  echo "${V1} not found"
+  echo "${WORKDIR}/${V1} not found"
   exit
 fi
 
 if [ ! -e "${V2}" ]
 then
-  echo "${V2} not found"
+  echo "${WORKDIR}/${V2} not found"
   exit
 fi
 

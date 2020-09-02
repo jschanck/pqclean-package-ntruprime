@@ -93,8 +93,6 @@ do
   mkdir -p ${BUILD_CRYPTO_KEM}/${PARAM}/{clean,avx2}
   cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
   cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
-  cp -Lp ${BASE}/crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
-  cp -Lp ${BASE}/crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
 done
 
 for PARAM in {sntrup,ntrulpr}{653,761,857}
@@ -175,7 +173,7 @@ do
       fi
 
       MAIN=${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}
-      PROTOTYPE=$(grep '\(void\|int\) crypto_.*)' ${MAIN}.c | sed "s/${O}/${X}/")
+      PROTOTYPE=$(grep '^\(void\|int\) crypto_.*)' ${MAIN}.c | sed "s/${O}/${X}/")
       UPX=$(echo ${X} | tr [:lower:] [:upper:])
       echo "\
 #ifndef ${UPX}_H
@@ -218,6 +216,44 @@ void crypto_decode_int16(void *x,const unsigned char *s);
 #endif" > ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.h
   sed -i -s "s/crypto_decode\.h/crypto_decode_int16\.h/" ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.c
   sed -i -s "s/crypto_decode(/crypto_decode_int16(/" ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.c
+  endtask
+done
+
+for PARAM in {sntrup,ntrulpr}{653,761,857}
+do
+  task "Writing PQClean compatible crypto_stream_aes256ctr for ${PARAM}"
+
+echo '#include "crypto_stream_aes256ctr.h"
+
+int crypto_stream_aes256ctr(
+    uint8_t *out,
+    size_t outlen,
+    const uint8_t nonce[AESCTR_NONCEBYTES],
+    const uint8_t key[AES256_KEYBYTES]) {
+
+    aes256ctx state;
+    aes256_ctr_keyexp(&state, key);
+    aes256_ctr(out, outlen, nonce, &state);
+    aes256_ctx_release(&state);
+    return 0;
+}' | tee ${BUILD_CRYPTO_KEM}/${PARAM}/{clean,avx2}/crypto_stream_aes256ctr.c >/dev/null
+
+echo '#ifndef CRYPTO_STREAM_AES256CTR_H
+#define CRYPTO_STREAM_AES256CTR_H
+
+#include <stddef.h>
+#include <stdint.h>
+
+#include "aes.h"
+
+#define crypto_stream_aes256ctr CRYPTO_NAMESPACE(crypto_stream_aes256ctr)
+int crypto_stream_aes256ctr(
+    uint8_t *out,
+    size_t outlen,
+    const uint8_t nonce[AESCTR_NONCEBYTES],
+    const uint8_t key[AES256_KEYBYTES]);
+
+#endif' | tee ${BUILD_CRYPTO_KEM}/${PARAM}/{clean,avx2}/crypto_stream_aes256ctr.h >/dev/null
   endtask
 done
 
