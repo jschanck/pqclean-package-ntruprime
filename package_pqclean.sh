@@ -1,4 +1,4 @@
-VERSION=supercop-20200826
+VERSION=$(cat VERSION)
 
 PYTHON=/usr/bin/python3
 

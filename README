@@ -1,0 +1,6 @@
+Updating:
+  - Update `version' file.
+  - Run checkout.sh to create supercop-${VERSION} and supercop-${VERSION}-patched.
+  - Apply your changes to supercop-${VERSION}-patched
+  - Run update_patches.sh to populate the patches/ directory.
+

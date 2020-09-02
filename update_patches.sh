@@ -1,6 +1,3 @@
-V1=supercop-20200826
-V2=supercop-20200826-patched
-
 PYTHON=/usr/bin/python3
 
 WORKDIR=`dirname $0`
@@ -9,6 +6,9 @@ PATCHES=${WORKDIR}/patches
 SCRIPTS=${WORKDIR}/scripts
 
 cd ${WORKDIR}
+
+V1=$(cat VERSION)
+V2=${V1}-patched
 
 if [ ! -e "${V1}" ]
 then
