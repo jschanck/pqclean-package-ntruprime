@@ -93,8 +93,6 @@ do
   mkdir -p ${BUILD_CRYPTO_KEM}/${PARAM}/{clean,avx2}
   cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
   cp -Lp ${SUPERCOP}/crypto_kem/${PARAM}/factored/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
-  cp -Lp ${BASE}/crypto_sort/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
-  cp -Lp ${BASE}/crypto_sort/avx2/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
   cp -Lp ${BASE}/crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/clean/
   cp -Lp ${BASE}/crypto_stream/aes256ctr/pqclean/ref/*.{c,h} ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/
 done
@@ -103,11 +101,13 @@ for PARAM in {sntrup,ntrulpr}{653,761,857}
 do
   for OUT in clean avx2
   do
-    # Add '#include "crypto_encode_[...]round.h"' to params.h
+    # Add several #includes to params.h
     # Sort of a kludge, but its easier to grab the required dependencies
     # if we do all includes up front.
     sed -i 's/^\(.*\)round\.h"/\1round.h"\n\1.h"/' ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
     # Similary, we need crypto_core_weight[...].h and crypto_encode_int16.h for some parameter sets
+    sed -i "3a#include \"crypto_sort_int32.h\"" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
+    sed -i "3a#include \"crypto_sort_uint32.h\"" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
     if [ -e "${SUPERCOP}/crypto_core/weight${PARAM}" ]
     then
       sed -i "3a#include \"crypto_core_weight${PARAM}.h\"" ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/params.h
@@ -123,37 +123,26 @@ do
       O=$(echo $X | sed 's/_/\//2' | cut -d'/' -f 1)
       P=$(echo $X | sed 's/_/\//2' | cut -d'/' -f 2)
       # For /clean, favor portable then ref
-      if [ -e "${SUPERCOP}/${O}/${P}/portable/" ]
-      then
-        REF="portable"
-      else
-        REF="ref"
-      fi
+      for PREF in portable ref
+      do
+        [ -e "${SUPERCOP}/${O}/${P}/${PREF}/" ] && REF=${PREF} && break
+      done
 
       # For /avx2, favor avx then portable then ref
-      if [ -e "${SUPERCOP}/${O}/${P}/avx/" ]
-      then
-        AVX="avx"
-      elif [ -e "${SUPERCOP}/${O}/${P}/portable/" ]
-      then
-        AVX="portable"
-      else
-        AVX="ref"
-      fi
+      for PREF in avx portable ref
+      do
+        [ -e "${SUPERCOP}/${O}/${P}/${PREF}/" ] && AVX=${PREF} && break
+      done
+      # Special cases
+      [ "${O}" == "crypto_sort" ] && [ "${P}" == "int32" ] && REF=x86 && AVX=avx2
+      [ "${O}" == "crypto_sort" ] && [ "${P}" == "uint32" ] && REF=useint32 && AVX=useint32
 
-      if [ "${OUT}" == "clean" ]
-      then
-        IN=${REF}
-      elif [ "${OUT}" == "avx2" ]
-      then
-        IN=${AVX}
-      else
-        exit
-      fi
-
-      task "Copying ${PARAM}/${O}/${P}/${IN} to ${OUT}"
-      ( cd ${SUPERCOP}/${O}/${P}/${IN}/
       # Copy all .c files. Change filenames to avoid conflicts if necessary.
+      [ "${OUT}" == "clean" ] && IN=${REF}
+      [ "${OUT}" == "avx2" ] && IN=${AVX}
+
+      task "Copying ${O}/${P}/${IN} to ${PARAM}/${OUT}"
+      ( cd ${SUPERCOP}/${O}/${P}/${IN}/
       if [ "$(ls *.c | wc -l)" == "1" ]
       then
         cp -Lp *.c ${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}.c
@@ -187,9 +176,10 @@ do
 
       MAIN=${BUILD_CRYPTO_KEM}/${PARAM}/${OUT}/${X}
       PROTOTYPE=$(grep '\(void\|int\) crypto_.*)' ${MAIN}.c | sed "s/${O}/${X}/")
+      UPX=$(echo ${X} | tr [:lower:] [:upper:])
       echo "\
-#ifndef ${X^^}_H
-#define ${X^^}_H
+#ifndef ${UPX}_H
+#define ${UPX}_H
 #include <stdint.h>
 ${API}
 
@@ -215,7 +205,7 @@ done
 
 for PARAM in sntrup{653,761,857}
 do
-  task "Copying ${PARAM}/crypto_decode/int16/ref to avx2"
+  task "Copying crypto_decode/int16/ref to ${PARAM}/avx2"
   API=$(sed "s/CRYPTO_/${X}_/" ${SUPERCOP}/crypto_decode/int16/ref/api.h)
   cp -Lp ${SUPERCOP}/crypto_decode/int16/ref/*.c ${BUILD_CRYPTO_KEM}/${PARAM}/avx2/crypto_decode_int16.c
   echo "\
@@ -348,7 +338,7 @@ do
   for IMPL in clean avx2
   do
     ( cd ${BUILD_CRYPTO_KEM}/${PARAM}/${IMPL}
-    NAMESPACE=PQCLEAN_${PARAM^^}_${IMPL^^}
+    NAMESPACE=$(echo PQCLEAN_${PARAM}_${IMPL} | tr [:lower:] [:upper:])
     for X in $(grep CRYPTO_NAMESPACE *.{c,h} | cut -f2 -d' ' | sort -u); do
       sed -i -s "s/ ${X}/ ${NAMESPACE}_${X}/g" *.c *.h
     done

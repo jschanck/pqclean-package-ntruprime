@@ -9,4 +9,4 @@
  
  #include "crypto_verify_1039.h"
  #define crypto_verify_clen crypto_verify_1039
-diff -ru --no-dereference supercop-20200826/crypto_verify/1025/avx/verify.c supercop-20200826-patched/crypto_verify/1025/avx/verify.c
+diff -ru --no-dereference supercop-20200826/crypto_sort/int32/avx2/sort.c supercop-20200826-patched/crypto_sort/int32/avx2/sort.c
