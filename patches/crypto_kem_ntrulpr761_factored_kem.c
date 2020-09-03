@@ -53,7 +53,7 @@
  }
  
  /* ----- underlying hash function */
-@@ -104,18 +104,31 @@
+@@ -104,7 +104,7 @@
  {
    unsigned char h[64];
    int i;
@@ -62,33 +62,7 @@
    for (i = 0;i < 32;++i) out[i] = h[i];
  }
  
- /* ----- higher-level randomness */
- 
-+static uint32 urandom32(void)
-+{
-+  unsigned char c[4];
-+  uint32 out[4];
-+
-+  randombytes(c,4);
-+  out[0] = (uint32)c[0];
-+  out[1] = ((uint32)c[1])<<8;
-+  out[2] = ((uint32)c[2])<<16;
-+  out[3] = ((uint32)c[3])<<24;
-+  return out[0]+out[1]+out[2]+out[3];
-+}
-+
- static void Short_random(small *out)
- {
-   uint32 L[p];
-+  int i;
- 
--  randombytes((unsigned char *) L,sizeof L);
--  crypto_decode_pxint32(L,(unsigned char *) L);
-+  for (i = 0;i < p;++i) L[i] = urandom32();
-   Short_fromlist(out,L);
- }
- 
-@@ -258,7 +271,7 @@
+@@ -258,7 +258,7 @@
        int8 T[I];
        Top_decode(T,c+Rounded_bytes);
        for (i = 0;i < I;++i)
@@ -97,7 +71,7 @@
      }
    }
    {
-@@ -267,9 +280,9 @@
+@@ -267,9 +267,9 @@
      unsigned char x[1+Inputs_bytes+Ciphertexts_bytes+Confirm_bytes];
      Hide(cnew,x,r,pk,cache);
      mask = crypto_verify_clen(c,cnew);
